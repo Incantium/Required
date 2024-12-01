@@ -1,0 +1,11 @@
+{
+  "name": "com.incantium.required",
+  "version": "1.0.0",
+  "displayName": "Required",
+  "description": "Make your Unity reference fields required, so they must always be set.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Incantium",
+    "url": "https://github.com/Incantium"
+  }
+}
