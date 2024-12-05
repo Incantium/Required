@@ -9,6 +9,6 @@
         /// <summary>
         /// The status of the required field.
         /// </summary>
-        RequireStatus required { get; }
+        RequireStatus status { get; }
     }
 }
