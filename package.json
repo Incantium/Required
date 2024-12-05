@@ -2,8 +2,18 @@
   "name": "com.incantium.required",
   "version": "1.0.0",
   "displayName": "Required",
-  "description": "Make your Unity reference fields required, so they must always be set.",
+  "description": "Make your Unity reference fields required, so they always must be set.",
   "unity": "2022.3",
+  "documentationUrl": "https://github.com/Incantium/Required/blob/main/README.md",
+  "changelogUrl": "https://github.com/Incantium/Required/releases",
+  "licensesUrl": "https://github.com/Incantium/Required/blob/main/LICENSE",
+  "keywords": [
+    "Package",
+    "C#",
+    "Unity",
+    "Attribute",
+    "Developer-tool"
+  ],
   "author": {
     "name": "Incantium",
     "url": "https://github.com/Incantium"

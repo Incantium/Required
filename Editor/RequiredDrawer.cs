@@ -59,13 +59,13 @@ namespace Incantium.Attributes.Editor
 
             if (status is RequireStatus.Unable)
             {
-                const string warning = "Required cannot be used for non-reference types.";
-                EditorGUI.HelpBox(rect, warning, MessageType.Warning);
+                var message = $"Required cannot be used for '{fieldInfo.FieldType}', which is non-referenceable.";
+                EditorGUI.HelpBox(rect, message, MessageType.Warning);
             }
             else if (status is RequireStatus.Missing)
             {
-                const string warning = "Missing required object reference.";
-                EditorGUI.HelpBox(rect, warning, MessageType.Error);
+                const string message = "Missing required reference.";
+                EditorGUI.HelpBox(rect, message, MessageType.Error);
             }
         }
 
@@ -92,13 +92,12 @@ namespace Incantium.Attributes.Editor
         {
             var obj = property.Target();
 
-            if (obj is IRequireable require) return require.required;
+            if (obj is IRequireable require) return require.status;
             if (property.propertyType != SerializedPropertyType.ObjectReference) return RequireStatus.Unable;
             
             return property.objectReferenceValue != null 
                    || EditorUtility.IsPersistent(property.serializedObject.targetObject) 
                 ? RequireStatus.Found : RequireStatus.Missing;
-        } 
-            
+        }
     }
 }

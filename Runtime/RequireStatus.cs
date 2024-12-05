@@ -1,8 +1,9 @@
 ﻿namespace Incantium.Attributes
 {
     /// <summary>
-    /// Enum for different statuses of the <see cref="Attributes.Required"/> attribute to show.
+    /// Enum for different statuses of the <see cref="Required"/> attribute to show.
     /// </summary>
+    /// <seealso href="https://github.com/Incantium/Required/blob/main/API~/RequireStatus.md">RequireStatus</seealso>
     public enum RequireStatus
     {
         /// <summary>
