@@ -9,35 +9,19 @@ namespace Incantium.Attributes.Editor
     /// </summary>
     [CustomPropertyDrawer(typeof(Required))]
     internal sealed class RequiredDrawer : PropertyDrawer
-    {
-        private const int HEIGHT = 30;
-        
+    { 
         /// <inheritdoc cref="PropertyDrawer.OnGUI"/>
         /// <summary>
         /// Method to draw the field labeled with as required. This method will draw the field itself alongside a
         /// warning if need be.
         /// </summary>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            EditorGUI.BeginProperty(position, label, property);
+        { 
+            // Draws the warning box.
+            DrawWarning(property);
             
-            DrawField(position, property, label);
-            DrawWarning(position, property, label);
-            
-            EditorGUI.EndProperty();
-        }
-        
-        /// <summary>
-        /// Method to draw the property field.
-        /// </summary>
-        /// <param name="position">Rectangle on the screen to use for the property GUI.</param>
-        /// <param name="property">The SerializedProperty to make the custom GUI for.</param>
-        /// <param name="label">The label of this property.</param>
-        private static void DrawField(Rect position, SerializedProperty property, GUIContent label)
-        {
-            if (Status(property) is RequireStatus.Missing or RequireStatus.Unable) position.height -= HEIGHT;
-            
-            EditorGUI.PropertyField(position, property, label);
+            // Draw the rest of the property.
+            EditorGUILayout.PropertyField(property, label, true);
         }
         
         /// <summary>
@@ -47,40 +31,21 @@ namespace Incantium.Attributes.Editor
         ///     <li>The property is null and is not present in a prefab.</li>
         /// </ul>
         /// </summary>
-        /// <param name="position">Rectangle on the screen to use for the property GUI.</param>
         /// <param name="property">The SerializedProperty to make the custom GUI for.</param>
-        /// <param name="label">The label of this property.</param>
-        private void DrawWarning(Rect position, SerializedProperty property, GUIContent label)
+        private void DrawWarning(SerializedProperty property)
         {
-            var height = base.GetPropertyHeight(property, label);
-            var rect = new Rect(position.x, position.y + height, position.width, HEIGHT);
-
             var status = Status(property);
 
             if (status is RequireStatus.Unable)
             {
-                var message = $"Required cannot be used for '{fieldInfo.FieldType}', which is non-referenceable.";
-                EditorGUI.HelpBox(rect, message, MessageType.Warning);
+                var message = $"Required cannot be used on '{property.name}' with '{fieldInfo.FieldType}', which is non-referenceable.";
+                EditorGUILayout.HelpBox(message, MessageType.Warning);
             }
             else if (status is RequireStatus.Missing)
             {
-                const string message = "Missing required reference.";
-                EditorGUI.HelpBox(rect, message, MessageType.Error);
+                var message = $"Required reference on '{property.name}' for '{fieldInfo.FieldType}' is missing.";
+                EditorGUILayout.HelpBox(message, MessageType.Error);
             }
-        }
-
-        /// <inheritdoc cref="PropertyDrawer.GetPropertyHeight"/>
-        /// <summary>
-        /// Method to calculate the height required for the field. This will take into account the height of a warning
-        /// if needed.
-        /// </summary>
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            var height = base.GetPropertyHeight(property, label);
-            
-            if (Status(property) is RequireStatus.Missing or RequireStatus.Unable) height += HEIGHT;
-        
-            return height;
         }
 
         /// <summary>
@@ -99,5 +64,7 @@ namespace Incantium.Attributes.Editor
                    || EditorUtility.IsPersistent(property.serializedObject.targetObject) 
                 ? RequireStatus.Found : RequireStatus.Missing;
         }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => 0;
     }
 }
